@@ -6,26 +6,15 @@ from langchain_core.prompts import PromptTemplate, load_prompt
 
 
 load_dotenv()
-llm1= HuggingFacePipeline.from_model_id(model_id="TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+llm1= HuggingFacePipeline.from_model_id(model_id="microsoft/Phi-3-mini-4k-instruct",
      task="text-generation",pipeline_kwargs=dict(temperature=0.4,max_new_tokens=512)
          )
 model1 = ChatHuggingFace(llm=llm1)
 st.header('Quiz Preparation Tool')
-topic_input = st.selectbox('Select Research Paper Name',['Select','Supervised Learning','Decision Trees', 'SVM',"Knn","Logistic and Linear regression"])
-#style_input = st.multiselect("Select Explanation Style",["Select","Code-heavy","Math heavy","Analogies","Simple layman terms beginner friendly","Technical"])
-#length_input = st.selectbox("Select Explanation Length",["1-2","3-5","more than 5"])
-#template1 = load_prompt("template1.json")
-template1 = PromptTemplate(template="""
-Give exactly only 4 questions on {topic_input}. Each question will have 4 options to select from, out of which only 1 should be the right answer to the question.
-Each multi choice option must be different from each other.
-Focus either on:
-- intuition or applications or conceptual understanding
+topic_input = st.selectbox('Select Topic',['Select','Supervised Learning','Decision Trees', 'SVM',"Knn","Logistic and Linear regression", "K means"])
 
+template1 = load_prompt("C:\\Users\\Madhura\\Desktop\\Langchain_Models\\Prompts\\template1.json")
 
-Include correct answers.
-""", input_variables=['topic_input'],
-validate_template=True
-)
 if st.button("Questions"):
     chain1 = template1 | model1
     result1 = chain1.invoke({
